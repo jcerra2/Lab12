@@ -3,6 +3,8 @@ package edu.illinois.cs.cs125.lab12;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -38,6 +40,15 @@ public final class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        final Button weatherRefresh = findViewById(R.id.weatherRefresh);
+        weatherRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                Log.d(TAG, "Refresh weather button clicked");
+                startAPICall();
+            }
+        });
+
         startAPICall();
     }
 
@@ -64,15 +75,17 @@ public final class MainActivity extends AppCompatActivity {
                         public void onResponse(final JSONObject response) {
                             try {
                                 Log.d(TAG, response.toString(2));
-                            } catch (JSONException ignored) { }
+                            } catch (JSONException ignored) {
+                            }
                         }
                     }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(final VolleyError error) {
-                            Log.e(TAG, error.toString());
-                        }
-                    });
+                @Override
+                public void onErrorResponse(final VolleyError error) {
+                    Log.e(TAG, error.toString());
+                }
+            });
             requestQueue.add(jsonObjectRequest);
+            JSONObject main = jsonObjectRequest.getAs
         } catch (Exception e) {
             e.printStackTrace();
         }
